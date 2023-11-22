@@ -1,18 +1,20 @@
 <?php
 
-namespace src\Logger\Controller;
+namespace app\controllers;
 
 use src\Logger\ConstantBag\Type;
 use src\Logger\LoggerInterface;
+use Yii;
 use yii\web\Controller;
 
 class LoggerController extends Controller
 {
     private $logger;
 
-    public function __invoke(): void
+    public function __construct($id, $module, LoggerInterface $logger, array $config = [])
     {
-        $this->logger =  \Yii::$container->get(LoggerInterface::class);
+        $this->logger = $logger;
+        parent::__construct($id, $module, $config);
     }
 
     /**

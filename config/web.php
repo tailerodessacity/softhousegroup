@@ -16,13 +16,17 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'container' => [
-        'definitions' => [
-            LoggerFactoryInterface::class => LoggerFactory::class,
-        ],
-    ],
     'components' => [
+        'container' => [
+            'definitions' => [
+                'class' => [
+                    src\Logger\LoggerInterface::class => src\Logger\Logger::class,
+                ]
+
+            ],
+        ],
         'request' => [
+//            'class' => 'yii\web\Request',
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '0ZoIXcNgKTPYhOEFXPtR9mhIeSIrv2rY',
         ],
@@ -52,14 +56,16 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'log' => 'logger/log'
             ],
         ],
-        */
+
+
     ],
     'params' => $params,
 ];

@@ -2,26 +2,22 @@
 
 namespace src\Logger;
 
-use src\Logger\Factory\LoggerFactoryInterface;
+use src\Logger\ConstantBag\Type;
+use src\Logger\Factory\DatabaseLoggerFactory;
+use src\Logger\Factory\EmailLoggerFactory;
+use src\Logger\Factory\FileLoggerFactory;
 
 class Logger implements LoggerInterface
 {
     private $type;
-
-    private $loggerFactory;
-
-    public function __construct(LoggerFactoryInterface $loggerFactory)
-    {
-        $this->loggerFactory = $loggerFactory;
-    }
 
     /**
      * {@inheritDoc}
      */
     public function send(string $message): void
     {
-        $model = $this->loggerFactory->create($this->getType());
-        $model->send($message);
+        $logger = $this->getLoggerByType($this->getType());
+        $logger->send($message);
     }
 
     /**
@@ -29,8 +25,8 @@ class Logger implements LoggerInterface
      */
     public function sendByLogger(string $message, string $loggerType): void
     {
-        $model = $this->loggerFactory->create($loggerType);
-        $model->send($message);
+        $logger = $this->getLoggerByType($loggerType);
+        $logger->send($message);
     }
 
     /**
@@ -47,5 +43,26 @@ class Logger implements LoggerInterface
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    public function getLoggerByType(string $type): Models\LoggerStrategy
+    {
+        $logger = null;
+
+        switch ($type) {
+            case Type::EMAIL_LOGGER_TYPE:
+                $logger = new EmailLoggerFactory();
+                break;
+            case Type::DATABASE_LOGGER_TYPE:
+                $logger = new DatabaseLoggerFactory();
+                break;
+            case Type::FILE_LOGGER_TYPE:
+                $logger = new FileLoggerFactory();
+                break;
+            default:
+                throw new \InvalidArgumentException("Unsupported logger type: $type");
+        }
+
+        return $logger->create();
     }
 }
