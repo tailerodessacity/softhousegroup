@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use src\Logger\ConstantBag\Type;
-use src\Logger\Factory\LoggerStrategyFactory;
 use src\Logger\LoggerInterface;
 use yii\web\Controller;
 

@@ -3,6 +3,7 @@
 namespace src\Logger;
 
 use src\Logger\Factory\LoggerStrategyFactory;
+use Yii;
 
 class Logger implements LoggerInterface
 {
@@ -12,6 +13,8 @@ class Logger implements LoggerInterface
 
     public function __construct(private readonly LoggerStrategyFactory $loggerStrategyFactory)
     {
+        $type = Yii::$app->get('loggerSettings')->defaultLoggerType;
+        $this->setType($type);
     }
 
     /**
@@ -19,6 +22,10 @@ class Logger implements LoggerInterface
      */
     public function send(string $message): void
     {
+        if(!$this->strategy){
+            throw new \RuntimeException('message strategy not set');
+        }
+
         $this->strategy->send($message);
     }
 
