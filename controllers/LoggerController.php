@@ -3,14 +3,24 @@
 namespace app\controllers;
 
 use src\Logger\ConstantBag\Type;
+use src\Logger\Factory\LoggerStrategyFactory;
 use src\Logger\LoggerInterface;
-use Yii;
 use yii\web\Controller;
 
 class LoggerController extends Controller
 {
     private $logger;
 
+    private $loggerFactory;
+
+    /**
+     * LoggerController construct
+     *
+     * @param $id
+     * @param $module
+     * @param LoggerInterface $logger
+     * @param array $config
+     */
     public function __construct($id, $module, LoggerInterface $logger, array $config = [])
     {
         $this->logger = $logger;
@@ -19,13 +29,14 @@ class LoggerController extends Controller
 
     /**
      * Sends a log message to the default logger.
-     *
      */
-    public function log()
+    public function actionLog()
     {
-        $this->logger->setType(Type::EMAIL_LOGGER_TYPE);
+        $this->logger->setType(TYPE::EMAIL_LOGGER_TYPE);
         $message = 'Sends a log message to email';
         $this->logger->send($message);
+
+        $this->asJson('ok');
     }
 
     /**
@@ -33,20 +44,28 @@ class LoggerController extends Controller
      *
      * @param string $type
      */
-    public function logTo(string $type)
+    public function actionLogTo(string $type)
     {
+        $this->logger->setType($type);
         $message = 'Sends a log message to a special logger';
-        $this->logger->sendByLogger($message, $type);
+        $this->logger->send($message);
+
+        $this->asJson('ok');
+
     }
 
     /**
      * Sends a log message to all loggers.
      */
-    public function logToAll()
+    public function actionLogToAll()
     {
         $message = 'Sends a log message to all loggers.';
+
         foreach (Type::getAllTypes() as $type) {
-           $this->logger->sendByLogger($message, $type);
+            $this->logger->setType($type);
+            $this->logger->send($message);
         }
+
+        $this->asJson('ok');
     }
 }

@@ -7,3 +7,15 @@ services:
       - ./:/app:delegated
     ports:
       - '8000:80'
+
+  mariadb:
+    image: mariadb
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_ROOT_HOST: 'localhost'
+      MYSQL_DATABASE: 'loc'
+      MYSQL_USER: 'loc'
+      MYSQL_PASSWORD: 'loc'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'

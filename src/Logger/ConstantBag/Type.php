@@ -2,10 +2,6 @@
 
 namespace src\Logger\ConstantBag;
 
-use src\Logger\Models\Database;
-use src\Logger\Models\Email;
-use src\Logger\Models\File;
-
 class Type
 {
     const DATABASE_LOGGER_TYPE = 'database';

@@ -1,9 +1,7 @@
 <?php
 
-use src\Logger\ConstantBag\Type;
-use src\Logger\Factory\LoggerFactory;
-use src\Logger\Factory\LoggerFactoryInterface;
-use src\Logger\Type\LoggerTypeInterface;
+use src\Logger\LoggerInterface;
+use src\Logger\Logger;
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -16,17 +14,18 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'container' => [
+        'definitions' => [
+            LoggerInterface::class => Logger::class,
+        ],
+    ],
     'components' => [
-        'container' => [
-            'definitions' => [
-                'class' => [
-                    src\Logger\LoggerInterface::class => src\Logger\Logger::class,
-                ]
-
-            ],
+        'loggerSettings' => [
+            'class' => 'src\Logger\LoggerSettingsComponent',
+            'email' => 'your@email.com',
+            'defaultLoggerType' => 'email',
         ],
         'request' => [
-//            'class' => 'yii\web\Request',
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '0ZoIXcNgKTPYhOEFXPtR9mhIeSIrv2rY',
         ],
@@ -61,7 +60,9 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'log' => 'logger/log'
+                'log' => 'logger/log',
+                'logto' => 'logger/log-to',
+                'logtoall' => 'logger/log-to-all',
             ],
         ],
 
