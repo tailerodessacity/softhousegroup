@@ -7,6 +7,9 @@ use src\Logger\Strategy\LoggerStrategy;
 
 class DatabaseFactory implements LoggerStrategyFactoryInterface
 {
+    /**
+     * {@inheritDoc}
+     */
     public function create(): LoggerStrategy
     {
         return new DatabaseLogger();

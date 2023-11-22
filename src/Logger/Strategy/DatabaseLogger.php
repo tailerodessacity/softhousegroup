@@ -6,7 +6,10 @@ use yii\db\ActiveRecord;
 
 class DatabaseLogger extends ActiveRecord implements LoggerStrategy
 {
-    public static function tableName()
+    /**
+     * @return string
+     */
+    public static function tableName(): string
     {
         return 'logs';
     }

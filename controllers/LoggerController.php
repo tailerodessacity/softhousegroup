@@ -10,8 +10,6 @@ class LoggerController extends Controller
 {
     private $logger;
 
-    private $loggerFactory;
-
     /**
      * LoggerController construct
      *
